@@ -31,6 +31,19 @@ def countAdapterChains(adapters, input, target):
         maxOption = 3
     return options * countAdapterChains(adapters, input+maxOption, target)
 
+def dynamicCount(adapterList):
+    counts = dict()
+    for adapter in adapterList:
+        combos = 0
+        if counts.__contains__(adapter+3):
+            combos += counts[adapter+3]
+        if counts.__contains__(adapter+2):
+            combos += counts[adapter+2]
+        if counts.__contains__(adapter+1):
+            combos += counts[adapter+1]
+        counts[adapter] = max(combos, 1)
+    return counts[0]
+
 if __name__ == "__main__":
     lines = readFile("data/d10.txt")
     adapters = set()
@@ -46,5 +59,10 @@ if __name__ == "__main__":
     for step in steps:
         print("We have {} instances of a step of {} jolts.".format(steps[step], step))
     print("Answer to part 1 is {}.".format(steps[1]*steps[3]))
-    cnt = countAdapterChains(adapters, input, target)
-    print("Answer to part 2 is {}.".format(cnt))
+    # cnt = countAdapterChains(adapters, input, target)
+    # print("Answer to part 2 is {}.".format(cnt))
+    adapterList = [0]
+    adapterList.extend(adapters)
+    adapterList.reverse()
+    res = dynamicCount(adapterList)
+    print("Answer to part 2 is {}.".format(res))
